@@ -4,6 +4,9 @@ import br.com.luizalabsserverrest.model.entity.ClientEntity;
 import br.com.luizalabsserverrest.repository.ClientRepository;
 import br.com.luizalabsserverrest.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,12 @@ public class ClientServiceImpl implements GenericService<ClientEntity> {
     @Override
     public List<ClientEntity> findAll() {
         return clientRepository.findAll();
+    }
+
+    @Override
+    public Page<ClientEntity> findAll(Pageable pageable) {
+
+        return clientRepository.findAll(pageable);
     }
 
     @Override
