@@ -1,0 +1,14 @@
+version: '3'
+services:
+  postgres-server:
+    image: 'postgres:latest'
+    environment:
+      POSTGRES_PASSWORD: "luizalabs"
+    ports:
+    - "5431:5432"
+    volumes:
+      - ./src/main/resources/db/migration/V1_init.sql:/docker-entrypoint-initdb.d/1-schema.sql
+  luizalabs-api:
+    build: .
+    ports:
+    - "3000:3000"
