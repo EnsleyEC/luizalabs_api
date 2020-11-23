@@ -1,8 +1,12 @@
 package br.com.luizalabsserverrest.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Entity
@@ -18,6 +22,13 @@ public class ClientEntity {
 
     @Column(name = "cli_email")
     private String email;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "client_has_product",
+            joinColumns = @JoinColumn(name = "chp_cli_id"),
+            inverseJoinColumns = @JoinColumn(name = "chp_pro_id"))
+    private List<ProductEntity> favoriteProductsList;
 
     public Long getId() {
         return id;
@@ -41,5 +52,14 @@ public class ClientEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonIgnore
+    public List<ProductEntity> getFavoriteProductsList() {
+        return favoriteProductsList;
+    }
+
+    public void setFavoriteProductsList(List<ProductEntity> favoriteProductsList) {
+        this.favoriteProductsList = favoriteProductsList;
     }
 }

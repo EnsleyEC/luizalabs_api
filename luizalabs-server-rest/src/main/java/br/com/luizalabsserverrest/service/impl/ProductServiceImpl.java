@@ -33,6 +33,11 @@ public class ProductServiceImpl implements GenericService<ProductEntity> {
     }
 
     @Override
+    public List<ProductEntity> findAllById(Iterable<Long> ids) {
+        return repository.findAllById(ids);
+    }
+
+    @Override
     public boolean existsById(Long id) {
         return repository.existsById(id);
     }
@@ -44,6 +49,6 @@ public class ProductServiceImpl implements GenericService<ProductEntity> {
 
     @Override
     public void deleteById(Long id) {
-
+        repository.deleteById(id);
     }
 }

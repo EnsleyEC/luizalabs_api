@@ -1,8 +1,10 @@
 package br.com.luizalabsserverrest.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -28,6 +30,13 @@ public class ProductEntity {
 
     @Column(name = "pro_review_score")
     private Double reviewScore;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "client_has_product",
+            joinColumns = @JoinColumn(name = "chp_pro_id"),
+            inverseJoinColumns = @JoinColumn(name = "chp_cli_id"))
+    private List<ClientEntity> clientEntityList;
 
     public Long getId() {
         return id;
@@ -75,5 +84,14 @@ public class ProductEntity {
 
     public void setReviewScore(Double reviewScore) {
         this.reviewScore = reviewScore;
+    }
+
+    @JsonIgnore
+    public List<ClientEntity> getClientEntityList() {
+        return clientEntityList;
+    }
+
+    public void setClientEntityList(List<ClientEntity> clientEntityList) {
+        this.clientEntityList = clientEntityList;
     }
 }
