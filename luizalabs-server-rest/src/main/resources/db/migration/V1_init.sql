@@ -59,3 +59,32 @@ COMMENT ON COLUMN luizalabs.product.pro_review_score IS 'Average reviews for thi
 ALTER TABLE luizalabs.product ADD CONSTRAINT pkproduct
 	PRIMARY KEY (pro_id);
 
+/******************** Add Table: luizalabs.client_has_product ************************/
+
+/* Build Table Structure */
+CREATE TABLE luizalabs.client_has_product
+(
+	chp_cli_id INTEGER NULL,
+	chp_pro_id INTEGER NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE luizalabs.client_has_product ADD CONSTRAINT pkclient_has_product
+	PRIMARY KEY (chp_cli_id,chp_pro_id);
+
+/* Add Comments */
+COMMENT ON COLUMN luizalabs.client_has_product.chp_cli_id IS 'Chave estrangeira que conecta na tabela: client';
+COMMENT ON COLUMN luizalabs.client_has_product.chp_pro_id IS 'Chave estrangeira que conecta na tabela: product';;
+
+/************ Add Foreign Keys ***************/
+
+/* Add Foreign Key: fk_chp_cli_id */
+ALTER TABLE luizalabs.client_has_product ADD CONSTRAINT fk_chp_cli_id
+	FOREIGN KEY (chp_cli_id) REFERENCES luizalabs.client (cli_id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: chp_pro_id */
+ALTER TABLE luizalabs.client_has_product ADD CONSTRAINT fk_chp_pro_id
+	FOREIGN KEY (chp_pro_id) REFERENCES luizalabs.product (pro_id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+

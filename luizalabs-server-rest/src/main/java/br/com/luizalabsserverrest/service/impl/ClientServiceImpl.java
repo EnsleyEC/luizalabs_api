@@ -1,5 +1,6 @@
 package br.com.luizalabsserverrest.service.impl;
 
+import br.com.luizalabsserverrest.controller.response.ClientResponse;
 import br.com.luizalabsserverrest.model.entity.ClientEntity;
 import br.com.luizalabsserverrest.repository.ClientRepository;
 import br.com.luizalabsserverrest.service.GenericService;
@@ -32,6 +33,11 @@ public class ClientServiceImpl implements GenericService<ClientEntity> {
     @Override
     public Optional<ClientEntity> findById(Long id) {
         return clientRepository.findById(id);
+    }
+
+    @Override
+    public List<ClientEntity> findAllById(Iterable<Long> ids) {
+        return clientRepository.findAllById(ids);
     }
 
     @Override

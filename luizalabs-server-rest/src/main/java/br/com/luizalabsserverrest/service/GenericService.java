@@ -14,6 +14,8 @@ public interface GenericService<T> {
 
     Optional<T> findById(Long id);
 
+    List<T> findAllById(Iterable<Long> ids);
+
     boolean existsById(Long id);
 
     T save(T type);
