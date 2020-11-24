@@ -1,11 +1,10 @@
 package br.com.luizalabsserverrest.controller.request;
-
 import java.util.Set;
 
 public class FavoriteProductsRequest {
 
     private Long clientId;
-    private Set<Long> productsIds;
+    private Set<Long> favoriteProductsIds;
 
     public Long getClientId() {
         return clientId;
@@ -15,11 +14,11 @@ public class FavoriteProductsRequest {
         this.clientId = clientId;
     }
 
-    public Set<Long> getProductsIds() {
-        return productsIds;
+    public Set<Long> getFavoriteProductsIds() {
+        return favoriteProductsIds;
     }
 
-    public void setProductsIds(Set<Long> productsIds) {
-        this.productsIds = productsIds;
+    public void setFavoriteProductsIds(Set<Long> favoriteProductsIds) {
+        this.favoriteProductsIds = favoriteProductsIds;
     }
 }

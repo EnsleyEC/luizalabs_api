@@ -1,11 +1,6 @@
 package br.com.luizalabsserverrest.controller.request;
 
 import br.com.luizalabsserverrest.model.entity.ClientEntity;
-import br.com.luizalabsserverrest.model.entity.ProductEntity;
-import br.com.luizalabsserverrest.service.GenericService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClientRequest {
 

@@ -7,7 +7,6 @@ import br.com.luizalabsserverrest.model.entity.ProductEntity;
 import br.com.luizalabsserverrest.repository.ProductRepository;
 import br.com.luizalabsserverrest.service.GenericService;
 import br.com.luizalabsserverrest.util.Constants;
-import ch.qos.logback.core.net.server.Client;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @Api(value = "Product")
