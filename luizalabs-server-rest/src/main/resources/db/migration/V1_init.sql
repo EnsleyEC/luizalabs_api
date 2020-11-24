@@ -32,7 +32,7 @@ COMMENT ON COLUMN luizalabs.client.cli_email IS 'Client email';
 /* Add Primary Key */
 ALTER TABLE luizalabs.client ADD CONSTRAINT pkclient
 	PRIMARY KEY (cli_id);
-	
+
 
 /******************** Add Table: luizalabs.product ************************/
 
@@ -44,7 +44,7 @@ CREATE TABLE luizalabs.product
 	pro_image text NULL,
 	pro_brand VARCHAR(50) NULL,
 	pro_title VARCHAR(50) NULL,
-	pro_review_score real NULL 
+	pro_review_score real NULL
 );
 
 /* Add Comments */
