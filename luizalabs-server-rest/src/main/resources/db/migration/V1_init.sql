@@ -11,6 +11,7 @@ CREATE SCHEMA luizalabs;
 
 CREATE SEQUENCE luizalabs.client_cli_id_seq INCREMENT BY 1 START 1;
 CREATE SEQUENCE luizalabs.product_pro_id_seq INCREMENT BY 1 START 1;
+CREATE SEQUENCE luizalabs.account_acc_id_seq INCREMENT BY 1 START 1;
 
 /************ Update: Tables ***************/
 
@@ -74,7 +75,24 @@ ALTER TABLE luizalabs.client_has_product ADD CONSTRAINT pkclient_has_product
 
 /* Add Comments */
 COMMENT ON COLUMN luizalabs.client_has_product.chp_cli_id IS 'Chave estrangeira que conecta na tabela: client';
-COMMENT ON COLUMN luizalabs.client_has_product.chp_pro_id IS 'Chave estrangeira que conecta na tabela: product';;
+COMMENT ON COLUMN luizalabs.client_has_product.chp_pro_id IS 'Chave estrangeira que conecta na tabela: product';
+
+/******************** Add Table: luizalabs.account ************************/
+
+CREATE TABLE luizalabs.account
+(
+	acc_id INTEGER DEFAULT nextval('luizalabs.account_acc_id_seq'::regclass) NOT NULL,
+	acc_username varchar(20) UNIQUE NULL,
+	acc_password varchar(80) NULL
+);
+/* Add Comments */
+COMMENT ON COLUMN luizalabs.account.acc_id IS 'Account id';
+COMMENT ON COLUMN luizalabs.account.acc_username IS 'Account username';
+COMMENT ON COLUMN luizalabs.account.acc_password IS 'Account password';
+
+/* Add Primary Key */
+ALTER TABLE luizalabs.account ADD CONSTRAINT pkaccount
+	PRIMARY KEY (acc_id);
 
 /************ Add Foreign Keys ***************/
 
