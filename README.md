@@ -20,8 +20,9 @@
 
 # Pré-requisitos
 
-Para testar/executar o código em um ambiente de desenvolvimento, você irá precisar:
+Para testar/executar o código em um ambiente de desenvolvimento, você irá precisar(alguns são opcionais):
 
+<a href="https://git-scm.com/">Git</a>,
 <a href="https://www.docker.com/"> Docker</a>,
 <a href="https://spring.io/projects/spring-boot"> Spring Boot</a>,
 <a href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html"> Java 8</a>
@@ -29,6 +30,7 @@ Para testar/executar o código em um ambiente de desenvolvimento, você irá pre
 
 Caso for apenas para executar a aplicação:
 
+<a href="https://git-scm.com/">Git</a>,
 <a href="https://www.docker.com/"> Docker</a>
 
 # Executando
