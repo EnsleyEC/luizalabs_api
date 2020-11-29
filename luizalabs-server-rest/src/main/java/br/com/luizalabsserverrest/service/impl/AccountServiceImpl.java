@@ -62,5 +62,9 @@ public class AccountServiceImpl implements GenericService<AccountEntity> {
         return repository.findByUsername(username);
     }
 
+    public boolean existsByUsername(String username)
+    {
+        return repository.existsByUsername(username);
+    }
 
 }

@@ -50,7 +50,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         return new ApiInfoBuilder()
                 .title("Spring Boot REST API - LuizaLabs")
                 .description("\"Spring Boot REST API for LuizaLabs\"")
-                .version("1.0.0")
+                .version("0.0.3")
                 .license("Apache License Version 2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
                 .contact(new Contact("Ensley", "https://www.linkedin.com/in/ensley-ribeiro-37b293126/", "ensleyfmr@gmail.com"))

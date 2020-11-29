@@ -121,9 +121,9 @@ public class ClientController {
             @ApiResponse(code = HttpServletResponse.SC_OK, message = "ok", response = ClientResponse.class),
             @ApiResponse(code = HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message = "An unexpected error occurred") })
     @PostMapping(path = Constants.ROUTE_ADD_FAVORITE_PRODUCTS_BY_CLIENT)
-    public ResponseEntity<ClientResponse> addFavoriteProductsToClient(@RequestBody FavoriteProductsRequest fpRequest) {
+    public ResponseEntity<ClientResponse> addFavoriteProductsToClient(@RequestBody FavoriteProductsRequest favoriteProductsRequest) {
 
-        Optional<ClientEntity> client = service.findById(fpRequest.getClientId());
+        Optional<ClientEntity> client = service.findById(favoriteProductsRequest.getClientId());
 
         if(!client.isPresent()) {
 
@@ -132,7 +132,7 @@ public class ClientController {
 
         ClientEntity clientSave = client.get();
 
-        List<ProductEntity> productEntityList = productService.findAllById(fpRequest.getFavoriteProductsIds());
+        List<ProductEntity> productEntityList = productService.findAllById(favoriteProductsRequest.getFavoriteProductsIds());
 
         clientSave.setFavoriteProductsList(productEntityList);
 
