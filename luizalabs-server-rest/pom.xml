@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com</groupId>
 	<artifactId>luizalabs-server-rest</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-RELEASE</version>
 	<name>luizalabs-api</name>
 	<description>API rest do desafio</description>
 
@@ -112,7 +112,7 @@
 				</executions>
 				<configuration>
 					<repository>ensleyribeiro/${project.name}</repository>
-					<tag>latest</tag>
+					<tag>${project.version}</tag>
 					<skipDockerInfo>true</skipDockerInfo>
 				</configuration>
 			</plugin>

@@ -15,7 +15,7 @@ spec:
         io.kompose.service: luizalabs-api
     spec:
       containers:
-      - image: ensleyribeiro/luizalabs-api:latest
+      - image: ensleyribeiro/luizalabs-api:0.0.3-RELEASE
         imagePullPolicy: ""
         name: luizalabs-api
         ports:
