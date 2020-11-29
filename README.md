@@ -3,6 +3,7 @@
 [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://github.com/EnsleyEC/luizalabs_api/tree/master/docs/api)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 ![Badge](https://img.shields.io/static/v1?label=status&message=working&color=4CC61E)
+![Badge](https://travis-ci.org/EnsleyEC/luizalabs_api.svg?branch=master)
 
 # Tópicos
 
