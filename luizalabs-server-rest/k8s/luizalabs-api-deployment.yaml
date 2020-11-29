@@ -5,7 +5,7 @@ metadata:
     io.kompose.service: luizalabs-api
   name: luizalabs-api
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       io.kompose.service: luizalabs-api
@@ -15,7 +15,7 @@ spec:
         io.kompose.service: luizalabs-api
     spec:
       containers:
-      - image: ensleyribeiro/luizalabs-api:0.0.2-SNAPSHOT
+      - image: ensleyribeiro/luizalabs-api:latest
         imagePullPolicy: ""
         name: luizalabs-api
         ports:
