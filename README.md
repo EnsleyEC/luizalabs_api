@@ -1,6 +1,8 @@
 # API Rest - Luizalabs: feita para o desafio.
 
-[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://github.com/EnsleyEC/luizalabs_api/tree/master/docs/api)
+Essa API está sendo hosteada na Google Cloud utilizando 1 cluster com 3 replicas (3 pods) da API e 1 (1 pod) do postgres. Com o intuito de usar o LoadBalancer para distribuir as requisições da API nessas 3 replicas, e claro, facilitar todo processo de automização da mesma (CI/CD) e implementação de novas features no próprio cluster, para aprimorar cada vez mais o desempenho da aplicação.
+
+[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://35.247.252.166:3000/swagger-ui.html)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 ![Badge](https://img.shields.io/static/v1?label=status&message=working&color=4CC61E)
 ![Badge](https://travis-ci.org/EnsleyEC/luizalabs_api.svg?branch=master)
@@ -17,7 +19,12 @@
 
 # Demo
 
-<p>URL base: <a href="">35.247.252.166:3000 </a></p>
+<p>URL base da API: http://35.247.252.166:3000</p>
+<a href="http://35.247.252.166:3000/swagger-ui.html">Link de acesso</a></p>
+
+<p>Para consumir a API, é nececessário autenticar-se antes e enviar o token nas requests.
+
+Caso não tenha conta, o endpoint de criação de conta (/api/v1/account/save) é livre para acesso.</p>
 
 # Pré-requisitos
 
@@ -26,13 +33,14 @@ Para testar/executar o código em um ambiente de desenvolvimento, você irá pre
 <a href="https://git-scm.com/">Git</a>,
 <a href="https://www.docker.com/"> Docker</a>,
 <a href="https://spring.io/projects/spring-boot"> Spring Boot</a>,
-<a href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html"> Java 8</a>
+<a href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html"> Java 8</a>,
 <a href="https://www.postgresql.org/">PostgreSQL</a>
 
 Caso for apenas para executar a aplicação:
 
 <a href="https://git-scm.com/">Git</a>,
-<a href="https://www.docker.com/"> Docker</a>
+<a href="https://www.docker.com/"> Docker</a>,
+<a href="https://docs.docker.com/compose/"> Docker Compose </a>
 
 # Executando
 
@@ -45,13 +53,13 @@ Caso for apenas para executar a aplicação:
 
     cd luizalabs-server-rest
 
-### - Gere a imagem do projeto (API + PostgreSQL) com o Docker, no mesmo diretório do arquivo docker-compose.yml
+### - Gere a imagem do projeto (API + PostgreSQL) com o Docker Compose, no mesmo diretório do arquivo docker-compose.yml
 
     docker-compose up
 
 ### - URL local de acesso:
 
-    URL: http://localhost:3000/
+    URL base: http://localhost:3000/
 
     DOC: http://localhost:3000/swagger-ui.html
 
@@ -69,8 +77,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [Docker](https://www.docker.com/)
 - [Kubernetes](https://kubernetes.io/)
 - [Git](https://git-scm.com/)
+- [Travis-CI](https://travis-ci.org/)
 - [Google Cloud](https://cloud.google.com/)
-- [Nginx](https://www.nginx.com/)
 
 # Autor
 

@@ -85,16 +85,16 @@ public class ProductController {
             @ApiResponse(code = HttpServletResponse.SC_OK, message = "ok", responseContainer = "List",response = ProductResponse.class),
             @ApiResponse(code = HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message = "An unexpected error occurred") })
     @GetMapping(path = Constants.ROUTE_FIND_FAVORITE_PRODUCTS_BY_CLIENT)
-    public ResponseEntity<?> findFavoriteProductListByClientId(@PathVariable("id") Long id) {
+    public ResponseEntity<?> findFavoriteProductListByClientId(@PathVariable("clientId") Long clientId) {
 
-        Optional<ClientEntity> clientEntity = clientService.findById(id);
+        Optional<ClientEntity> clientEntity = clientService.findById(clientId);
 
         if(!clientEntity.isPresent()) {
 
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(repository.findAndFetchClientEntityListEagerly(id));
+        return ResponseEntity.ok(repository.findAndFetchClientEntityListEagerly(clientId));
 
     }
 

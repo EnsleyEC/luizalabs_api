@@ -17,7 +17,7 @@ public class Constants {
     public final static String ROUTE_ADD_FAVORITE_PRODUCTS_BY_CLIENT = "/products";
     /* PRODUCT */
     public final static String ROUTE_PRODUCT = "/api/v1/product";
-    public final static String ROUTE_FIND_FAVORITE_PRODUCTS_BY_CLIENT = "/client/{id}";
+    public final static String ROUTE_FIND_FAVORITE_PRODUCTS_BY_CLIENT = "/client/{clientId}";
 
     // ============= JWT ============== //
 
