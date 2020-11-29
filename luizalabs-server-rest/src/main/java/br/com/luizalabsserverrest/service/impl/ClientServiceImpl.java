@@ -54,4 +54,15 @@ public class ClientServiceImpl implements GenericService<ClientEntity> {
     public void deleteById(Long id) {
         clientRepository.deleteById(id);
     }
+
+    public boolean existsByEmail(String email)
+    {
+        return clientRepository.existsByEmail(email);
+    }
+
+    public Optional<ClientEntity> findByEmail(String email)
+    {
+        return clientRepository.findByEmail(email);
+    }
+
 }

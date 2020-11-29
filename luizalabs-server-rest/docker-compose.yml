@@ -1,14 +1,17 @@
 version: '3'
 services:
+  luizalabs-api:
+    image: ensleyribeiro/luizalabs-api:0.0.2-SNAPSHOT
+    #build: .
+    restart: always
+    depends_on:
+      - postgres-server
+    ports:
+      - "3000:3000"
   postgres-server:
     image: 'postgres:latest'
+    restart: always
     environment:
       POSTGRES_PASSWORD: "luizalabs"
     ports:
-    - "5431:5432"
-    volumes:
-      - ./src/main/resources/db/migration/V1_init.sql:/docker-entrypoint-initdb.d/1-schema.sql
-  luizalabs-api:
-    build: .
-    ports:
-    - "3000:3000"
+    - "5432:5432"

@@ -16,19 +16,19 @@ public class ProductEntity {
     @Column(name = "pro_id")
     private Long id;
 
-    @Column(name = "pro_title")
+    @Column(name = "pro_title", length = 50, columnDefinition = "CHARACTER VARYING")
     private String title;
 
-    @Column(name = "pro_image")
+    @Column(name = "pro_image",columnDefinition = "TEXT")
     private String image;
 
-    @Column(name = "pro_brand")
+    @Column(name = "pro_brand",length = 50, columnDefinition = "CHARACTER VARYING")
     private String brand;
 
-    @Column(name = "pro_price")
+    @Column(name = "pro_price",columnDefinition = "REAL")
     private Double price;
 
-    @Column(name = "pro_review_score")
+    @Column(name = "pro_review_score",columnDefinition = "REAL")
     private Double reviewScore;
 
     @ManyToMany(fetch = FetchType.LAZY)
