@@ -10,12 +10,13 @@
 	</parent>
 	<groupId>br.com</groupId>
 	<artifactId>luizalabs-server-rest</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>luizalabs-server-rest</name>
+	<version>0.0.2-SNAPSHOT</version>
+	<name>luizalabs-api</name>
 	<description>API rest do desafio</description>
 
 	<properties>
 		<java.version>1.8</java.version>
+		<problem-spring-web.version>0.25.0</problem-spring-web.version>
 	</properties>
 
 	<dependencies>
@@ -80,6 +81,13 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>5.3.3.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.zalando</groupId>
+			<artifactId>problem-spring-web-starter</artifactId>
+			<version>${problem-spring-web.version}</version>
+			<type>pom</type>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -87,6 +95,26 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- Docker -->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.6</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+							<!-- <goal>push</goal> -->
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<repository>ensleyribeiro/${project.name}</repository>
+					<tag>${project.version}</tag>
+					<skipDockerInfo>true</skipDockerInfo>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -3,9 +3,11 @@ package br.com.luizalabsserverrest.controller;
 import br.com.luizalabsserverrest.controller.request.ClientRequest;
 import br.com.luizalabsserverrest.controller.request.FavoriteProductsRequest;
 import br.com.luizalabsserverrest.controller.response.ClientResponse;
+import br.com.luizalabsserverrest.controller.response.MessageResponse;
 import br.com.luizalabsserverrest.model.entity.ClientEntity;
 import br.com.luizalabsserverrest.model.entity.ProductEntity;
 import br.com.luizalabsserverrest.service.GenericService;
+import br.com.luizalabsserverrest.service.impl.ClientServiceImpl;
 import br.com.luizalabsserverrest.util.Constants;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +28,7 @@ import java.util.Optional;
 public class ClientController {
 
     @Autowired
-    private GenericService<ClientEntity> service;
+    private ClientServiceImpl service;
 
     @Autowired
     private GenericService<ProductEntity> productService;
@@ -70,13 +73,18 @@ public class ClientController {
             @ApiResponse(code = HttpServletResponse.SC_OK, message = "ok", response = ClientResponse.class),
             @ApiResponse(code = HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message = "An unexpected error occurred") })
     @PostMapping(path = Constants.ROUTE_SAVE)
-    public ClientResponse create(@RequestBody ClientRequest client) {
+    public ResponseEntity<?> create(@RequestBody ClientRequest client) {
 
         ClientEntity clientEntity = ClientRequest.convertToEntity(client);
 
+        if(service.existsByEmail(client.getEmail()))
+        {
+            return ResponseEntity.badRequest().body(new MessageResponse("E-mail já existe."));
+        }
+
         service.save(clientEntity);
 
-        return ClientResponse.convertToResponse(service.save(clientEntity));
+        return ResponseEntity.ok(ClientResponse.convertToResponse(service.save(clientEntity)));
 
     }
 
@@ -85,7 +93,7 @@ public class ClientController {
             @ApiResponse(code = HttpServletResponse.SC_OK, message = "ok", response = ClientResponse.class),
             @ApiResponse(code = HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message = "An unexpected error occurred") })
     @PutMapping(path = Constants.ROUTE_ID)
-    public ResponseEntity<ClientResponse> updateById(@PathVariable("id") Long id, @RequestBody ClientRequest newClient) {
+    public ResponseEntity<?> updateById(@PathVariable("id") Long id, @RequestBody ClientRequest newClient) {
 
         Optional<ClientEntity> client = service.findById(id);
 
@@ -94,7 +102,15 @@ public class ClientController {
             return ResponseEntity.notFound().build();
         }
 
+        Optional<ClientEntity> clientWithEmail = service.findByEmail(newClient.getEmail());
+
+        if(clientWithEmail.isPresent() && clientWithEmail.get().getId() != id)
+        {
+            return ResponseEntity.badRequest().body(new MessageResponse("E-mail já existe."));
+        }
+
         ClientEntity clientSave = ClientRequest.convertToEntity(newClient);
+        clientSave.setId(id);
 
         return ResponseEntity.ok(ClientResponse.convertToResponse(service.save(clientSave)));
 

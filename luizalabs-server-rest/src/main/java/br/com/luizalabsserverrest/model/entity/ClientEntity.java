@@ -12,13 +12,13 @@ import java.util.List;
 public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cli_id")
+    @Column(name = "cli_id" )
     private Long id;
 
-    @Column(name = "cli_name")
+    @Column(name = "cli_name",length = 50, columnDefinition = "CHARACTER VARYING")
     private String name;
 
-    @Column(name = "cli_email")
+    @Column(name = "cli_email",nullable = false,unique = true, length = 60, columnDefinition = "CHARACTER VARYING")
     private String email;
 
     @ManyToMany(fetch = FetchType.LAZY)

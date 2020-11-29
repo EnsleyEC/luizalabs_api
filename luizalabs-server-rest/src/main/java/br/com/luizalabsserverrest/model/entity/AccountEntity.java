@@ -14,10 +14,10 @@ public class AccountEntity {
     @Column(name = "acc_id")
     private Long id;
 
-    @Column(name = "acc_username")
+    @Column(name = "acc_username",nullable = true, unique = true,length = 20, columnDefinition = "CHARACTER VARYING")
     private String username;
 
-    @Column(name = "acc_password")
+    @Column(name = "acc_password",nullable = true, length = 80, columnDefinition = "CHARACTER VARYING")
     private String password;
 
     public Long getId() {
@@ -43,4 +43,5 @@ public class AccountEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
