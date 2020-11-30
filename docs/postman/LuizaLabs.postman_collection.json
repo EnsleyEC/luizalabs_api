@@ -10,9 +10,33 @@
 			"item": [
 				{
 					"name": "/api/v1/client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2f4c88ca-90a1-4a7f-9b94-ed618881c2ff",
+								"exec": [
+									"pm.test(\"successCaseGetAtLeastOneClient\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{url}}/client",
 							"host": [
@@ -27,17 +51,41 @@
 				},
 				{
 					"name": "/api/v1/client/{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8fe8ecc0-05b7-4560-af28-86bca4f2143d",
+								"exec": [
+									"pm.test(\"successCaseGetClientById\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url}}/client/1",
+							"raw": "{{url}}/client/{{clientId}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"client",
-								"1"
+								"{{clientId}}"
 							]
 						}
 					},
@@ -45,12 +93,59 @@
 				},
 				{
 					"name": "/api/v1/client/save",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9686fe02-3a0e-40c5-a382-def34c31ff88",
+								"exec": [
+									"const response = pm.response.json();\r",
+									"postman.setEnvironmentVariable(\"clientId\",response.id);\r",
+									"\r",
+									"pm.test(\"successCaseCreateClient\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d04a2db8-d3e7-447b-b0df-d9e42b2853be",
+								"exec": [
+									"function generateEmailWord(length) {\r",
+									"   var result           = '';\r",
+									"   var characters       = '@_-abcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"   var charactersLength = characters.length;\r",
+									"   for ( var i = 0; i < length; i++ ) {\r",
+									"      result += characters.charAt(Math.floor(Math.random() * charactersLength));\r",
+									"   }\r",
+									"   return result;\r",
+									"}\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"email\",(\"email@teste\" + generateEmailWord(5)));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Ensley\",\r\n    \"email\":\"teste@luizalabs.com\"\r\n}",
+							"raw": "{\r\n    \"name\":\"Ensley\",\r\n    \"email\":\"{{email}}\",\r\n    \"productsIds\": []\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -71,10 +166,146 @@
 					"response": []
 				},
 				{
+					"name": "/api/v1/client/save - with email already exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1235f933-b796-447e-ae05-85db1cd4dcf2",
+								"exec": [
+									"pm.test(\"failCaseCreateClient\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.badRequest;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "509c2688-d5c3-4809-bfd8-b44e5c610d41",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Ensley\",\r\n    \"email\":\"{{email}}\",\r\n    \"productsIds\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/client/save",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/client/products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "65595f68-7c8c-450f-a590-7f5692899864",
+								"exec": [
+									"pm.test(\"updateFavoriteProductWithDuplicatedAndInvalidProduct\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientId\":{{clientId}},\r\n    \"favoriteProductsIds\":[\r\n        {{productId}},-4,{{productId}}\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/client/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/api/v1/client/{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05c50638-ba0f-4a5d-8db1-0e3a1a467076",
+								"exec": [
+									"pm.test(\"successCaseUpdateClient\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"name\":\"Ensley RRR\",\r\n    \"email\":\"teste@luizalabs.com\"\r\n}",
@@ -85,13 +316,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/client/3",
+							"raw": "{{url}}/client/{{clientId}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"client",
-								"3"
+								"{{clientId}}"
 							]
 						}
 					},
@@ -99,17 +330,39 @@
 				},
 				{
 					"name": "/api/v1/client/{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6ae5d92a-0f84-495f-a58e-5eb95babe8fa",
+								"exec": [
+									"pm.test(\"successCaseDeleteClientById\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url}}/client/1",
+							"raw": "{{url}}/client/{{clientId}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"client",
-								"1"
+								"{{clientId}}"
 							]
 						}
 					},
@@ -123,11 +376,35 @@
 			"item": [
 				{
 					"name": "/api/v1/product/?page=<PAGINA>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0ce07c79-5503-4a52-81f9-c19a677d2b42",
+								"exec": [
+									"pm.test(\"successCaseGetAtLeastOneProductByPage\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url}}/product/?page=1",
+							"raw": "{{url}}/product/?page={{page}}",
 							"host": [
 								"{{url}}"
 							],
@@ -138,7 +415,54 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "1"
+									"value": "{{page}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/product/?page=<PAGINA> - with invalid page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "443533c7-417d-4705-88ed-4458480b3250",
+								"exec": [
+									"pm.test(\"failCaseGetProductByInvalidPage\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.badRequest;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/product/?page=-1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "-1"
 								}
 							]
 						}
@@ -147,30 +471,106 @@
 				},
 				{
 					"name": "/api/v1/product/{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4c6160ab-5032-4b89-a5ab-9121e10f253a",
+								"exec": [
+									"pm.test(\"successCaseGetProductById\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url}}/product/1",
+							"raw": "{{url}}/product/{{productId}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"product",
-								"1"
+								"{{productId}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/v1/product/{id}",
+					"name": "/api/v1/product/save",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "588e0d67-43a9-4717-a7dd-f1fab4144016",
+								"exec": [
+									"const response = pm.response.json();\r",
+									"postman.setEnvironmentVariable(\"productId\",response.id);\r",
+									"\r",
+									"pm.test(\"successCaseCreateProduct\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cdf7c923-3863-41d3-9faa-a3bc21717af3",
+								"exec": [
+									"function generateWord(length) {\r",
+									"   var result           = '';\r",
+									"   var characters       = '@_-#&abcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"   var charactersLength = characters.length;\r",
+									"   for ( var i = 0; i < length; i++ ) {\r",
+									"      result += characters.charAt(Math.floor(Math.random() * charactersLength));\r",
+									"   }\r",
+									"   return result;\r",
+									"}\r",
+									"\r",
+									"function generateNumber(min, max) {\r",
+									"   return Math.floor((Math.random() * max) + min);\r",
+									"} \r",
+									"\r",
+									"postman.setEnvironmentVariable(\"productName\",\"productName\"+(generateWord(5)));\r",
+									"postman.setEnvironmentVariable(\"productValue\",(generateNumber(10,1000)));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\":\"Computador X\",\r\n    \"image\": \"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png\",\r\n    \"brand\": \"DELL\",\r\n    \"price\": 8000.500,\r\n    \"reviewScore\": 100.3333\r\n}",
+							"raw": "{\r\n    \"title\":\"{{productName}}\",\r\n    \"image\": \"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png\",\r\n    \"brand\": \"DELL\",\r\n    \"price\": {{productValue}},\r\n    \"reviewScore\": 100.3333\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -191,27 +591,43 @@
 					"response": []
 				},
 				{
-					"name": "/api/v1/product/{id}",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"title\":\"Computador X\",\r\n    \"image\": \"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png\",\r\n    \"brand\": \"DELL\",\r\n    \"price\": 8000.500,\r\n    \"reviewScore\": 100.3333\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+					"name": "/api/v1/product/client/{clientId}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a6367548-174a-4b29-82d3-fd794065ee37",
+								"exec": [
+									"pm.test(\"successCaseGetFavoriteProductByClientId\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
 							}
-						},
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
 						"url": {
-							"raw": "{{url}}/product/1",
+							"raw": "{{url}}/product/client/{{clientId}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"product",
-								"1"
+								"client",
+								"{{clientId}}"
 							]
 						}
 					},
@@ -219,17 +635,39 @@
 				},
 				{
 					"name": "/api/v1/product/{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b8756205-7f6b-475c-a4e5-b7d318825a48",
+								"exec": [
+									"pm.test(\"successCaseDeleteProductById\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url}}/product/1",
+							"raw": "{{url}}/product/{{productId}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"product",
-								"1"
+								"{{productId}}"
 							]
 						}
 					},
@@ -237,6 +675,244 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "/api/v1/account/save",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e57e2e78-28c6-4fa5-aad0-46a4929ce028",
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\t\r",
+									"postman.setEnvironmentVariable(\"accountId\",response.id);\r",
+									"\r",
+									"pm.test(\"successCaseCreateAccount\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f05fe1d0-5de7-4442-b922-61d3bbc59b51",
+								"exec": [
+									"function generateId(length) {\r",
+									"   var result           = '';\r",
+									"   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"   var charactersLength = characters.length;\r",
+									"   for ( var i = 0; i < length; i++ ) {\r",
+									"      result += characters.charAt(Math.floor(Math.random() * charactersLength));\r",
+									"   }\r",
+									"   return result;\r",
+									"}\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"username\",(\"user\" + generateId(5)));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/account/save",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"account",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/account/save - with username already exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "833af916-51a1-4db7-845b-de8846c5d006",
+								"exec": [
+									"pm.test(\"failCaseCreateAccountWithUsername\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.badRequest;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0a087642-0928-42a1-ae77-609db825f814",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/account/save",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"account",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/account/{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6087bec-eacd-4a09-92b3-239affc15a51",
+								"exec": [
+									"pm.test(\"successCaseDeleteAccountById\", function () {\r",
+									"    // make as many assertions as you'd like as part of this test\r",
+									"    // if any assertion throws an error, this test will fail\r",
+									"    pm.response.to.have.status(204)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/account/{{accountId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"account",
+								"{{accountId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "/api/v1/signin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "761ee87d-2a3b-4473-a17a-eaa79a8f6f6c",
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.globals.set(\"token\", response.token);\r",
+							"\r",
+							"pm.test(\"successCaseSignIn\", function () {\r",
+							"    // make as many assertions as you'd like as part of this test\r",
+							"    // if any assertion throws an error, this test will fail\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"teste\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/signIn",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"signIn"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
