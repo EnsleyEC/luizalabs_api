@@ -14,7 +14,7 @@ Essa API está sendo hosteada na Google Cloud utilizando 1 cluster com 3 replica
    * [Pré-requisitos](#Pré-requisitos)
    * [Executando](#Executando)
    * [Tests](#Tests)
-   * [Tecnologias](#Tecnologias)
+   * [Tecnologias/Ferramentas](#Tecnologias/Ferramentas)
 <!--te-->
 
 # Demo
@@ -34,13 +34,15 @@ Para testar/executar o código em um ambiente de desenvolvimento, você irá pre
 <a href="https://www.docker.com/"> Docker</a>,
 <a href="https://spring.io/projects/spring-boot"> Spring Boot</a>,
 <a href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html"> Java 8</a>,
-<a href="https://www.postgresql.org/">PostgreSQL</a>
+<a href="https://www.postgresql.org/">PostgreSQL</a>,
+<a href="https://www.postman.com/">Postman</a>
 
 Caso for apenas para executar a aplicação:
 
 <a href="https://git-scm.com/">Git</a>,
 <a href="https://www.docker.com/"> Docker</a>,
-<a href="https://docs.docker.com/compose/"> Docker Compose </a>
+<a href="https://docs.docker.com/compose/"> Docker Compose </a>,
+<a href="https://www.postman.com/">Postman</a>
 
 # Executando
 
@@ -51,7 +53,7 @@ Caso for apenas para executar a aplicação:
 
 ### - Acesse a pasta do projeto: luizalabs-server-rest
 
-    cd luizalabs-server-rest
+    cd luizalabs_api/luizalabs-server-rest/
 
 ### - Gere a imagem do projeto (API + PostgreSQL) com o Docker Compose, no mesmo diretório do arquivo docker-compose.yml
 
@@ -63,11 +65,26 @@ Caso for apenas para executar a aplicação:
 
     DOC: http://localhost:3000/swagger-ui.html
 
+### - Regras da API
+
+    Para usar, é necessário ter uma conta ou criar uma conta antes. E em seguida, antenticar-se, pegando o token e mandando nos outros endpoints para conseguir utiliza-los.
+
+    Endpoints livres para uso, sem precisar mandar token:
+
+    - Criação de conta: /api/v1/account/save
+    - Autenticação: /api/v1/signIn
+
+    Exemplo de header obrigatório:
+
+    {key: Authorization, value: Bearer flkjkds.......}
+
 # Tests
 
-    Building...
+    - Postman:
+        - Resultado: /docs/postman/LuizaLabs.postman_test_run.json
+        - Descrição: no postman é possível importar esse "run" e ver os resultados dos testes de cada endpoint.
 
-# Tecnologias
+# Tecnologias/Ferramentas
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
@@ -79,6 +96,9 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [Git](https://git-scm.com/)
 - [Travis-CI](https://travis-ci.org/)
 - [Google Cloud](https://cloud.google.com/)
+- [Postman](https://www.postman.com/)
+- [IntelliJ Community](https://www.jetbrains.com/idea/)
+- [Pg Admin](https://www.pgadmin.org/)
 
 # Autor
 

@@ -1,6 +1,7 @@
 package br.com.luizalabsserverrest.controller;
 
 import br.com.luizalabsserverrest.controller.request.ProductRequest;
+import br.com.luizalabsserverrest.controller.response.MessageResponse;
 import br.com.luizalabsserverrest.controller.response.ProductResponse;
 import br.com.luizalabsserverrest.model.entity.ClientEntity;
 import br.com.luizalabsserverrest.model.entity.ProductEntity;
@@ -49,6 +50,11 @@ public class ProductController {
 
         // Primeira página é 0, se mandar a página 1, será buscada a 0.
         page -= 1;
+
+        if(page < 0)
+        {
+            return ResponseEntity.badRequest().body(new MessageResponse("A página deve ser maior que zero."));
+        }
 
         Pageable sortedByName =
                 PageRequest.of(page, 5, Sort.by("title"));
