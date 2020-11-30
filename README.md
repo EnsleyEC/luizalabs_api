@@ -2,7 +2,7 @@
 
 Essa API está sendo hosteada na Google Cloud utilizando 1 cluster com 3 replicas (3 pods) da API e 1 (1 pod) do postgres. Com o intuito de usar o LoadBalancer para distribuir as requisições da API nessas 3 replicas, e claro, facilitar todo processo de automização da mesma (CI/CD) e implementação de novas features no próprio cluster, para aprimorar cada vez mais o desempenho da aplicação.
 
-[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://35.247.252.166:3000/swagger-ui.html)
+[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://34.95.239.212:3000/swagger-ui.html)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 ![Badge](https://img.shields.io/static/v1?label=status&message=working&color=4CC61E)
 ![Badge](https://travis-ci.org/EnsleyEC/luizalabs_api.svg?branch=master)
@@ -19,8 +19,8 @@ Essa API está sendo hosteada na Google Cloud utilizando 1 cluster com 3 replica
 
 # Demo
 
-<p>URL base da API: http://35.247.252.166:3000</p>
-<a href="http://35.247.252.166:3000/swagger-ui.html">Link de acesso</a></p>
+<p>URL base da API: http://34.95.239.212:3000</p>
+<a href="http://34.95.239.212:3000/swagger-ui.html">Link de acesso</a></p>
 
 <p>Para consumir a API, é nececessário autenticar-se antes e enviar o token nas requests.
 
