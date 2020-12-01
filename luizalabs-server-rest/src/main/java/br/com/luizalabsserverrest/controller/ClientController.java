@@ -118,7 +118,7 @@ public class ClientController {
 
     @ApiOperation(value = "Adiciona os produtos favoritos ao cliente")
     @ApiResponses(value = {
-            @ApiResponse(code = HttpServletResponse.SC_OK, message = "ok", response = ClientResponse.class),
+            @ApiResponse(code = HttpServletResponse.SC_OK, message = "ok"),
             @ApiResponse(code = HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message = "An unexpected error occurred") })
     @PostMapping(path = Constants.ROUTE_ADD_FAVORITE_PRODUCTS_BY_CLIENT)
     public ResponseEntity<ClientResponse> addFavoriteProductsToClient(@RequestBody FavoriteProductsRequest favoriteProductsRequest) {

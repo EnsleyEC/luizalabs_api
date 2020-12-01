@@ -13,10 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.zalando.problem.ProblemModule;
 import org.zalando.problem.violations.ConstraintViolationProblemModule;
@@ -24,13 +24,15 @@ import org.zalando.problem.violations.ConstraintViolationProblemModule;
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 
 @WebMvcTest(controllers = ClientController.class)
-@ActiveProfiles("test")
+@AutoConfigureMockMvc(addFilters = false)
 public class ClientControllerTest {
 
     @Autowired
@@ -72,15 +74,31 @@ public class ClientControllerTest {
 
     @Test
     void shouldFetchAll() throws Exception{
-        given(service.findAll()).willReturn(list);
 
+        // logic
+        when(service.findAll()).thenReturn(list);
+
+        // test/check
         this.mockMvc.perform(get(Constants.ROUTE_CLIENT))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(list.size())));
     }
 
     @Test
-    void shouldCreateAddFavoriteProducts() throws Exception{
+    void shouldReturn404WhenFindAllResponseIsEmpty() throws Exception{
 
+        // logic
+        when(service.findAll()).thenReturn(new ArrayList<>());
+
+        // test/check
+        this.mockMvc.perform(get(Constants.ROUTE_CLIENT))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldAddFavoriteProducts() throws Exception{
+
+        // prepare
         FavoriteProductsRequest fpRequest = new FavoriteProductsRequest();
         Set<Long> ids = new HashSet<>();
         ids.add(1L);
@@ -88,6 +106,10 @@ public class ClientControllerTest {
         fpRequest.setClientId(1L);
         fpRequest.setFavoriteProductsIds(ids);
 
+        // logic
+        when(service.findById(fpRequest.getClientId())).thenReturn(Optional.of(this.list.get(0)));
+
+        // test/check
         this.mockMvc.perform(post(Constants.ROUTE_CLIENT + Constants.ROUTE_ADD_FAVORITE_PRODUCTS_BY_CLIENT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(fpRequest)))
@@ -97,25 +119,144 @@ public class ClientControllerTest {
     @Test
     void shouldCreateNewClient() throws Exception{
 
-        given(service.save(any(ClientEntity.class))).willAnswer((invocation) -> invocation.getArgument(0));
+        // prepare
+        ClientEntity clientEntity = this.list.get(0);
 
+        // logic
+        when(service.save(any(ClientEntity.class))).thenReturn(clientEntity);
+
+        // test/check
         this.mockMvc.perform(post(Constants.ROUTE_CLIENT + Constants.ROUTE_SAVE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(list.get(0))))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email", is(clientEntity.getEmail())))
+                .andExpect(jsonPath("$.name", is(clientEntity.getName())))
+                .andExpect(jsonPath("$.id", is(clientEntity.getId().intValue())));
+
+    }
+
+    @Test
+    void shouldReturn400WhenCreatingAClientWithAnExistingEmail() throws Exception{
+
+        // prepare
+        ClientEntity clientEntity = this.list.get(0);
+
+        // logic
+        when(service.existsByEmail(clientEntity.getEmail())).thenReturn(true);
+
+        // test/check
+        this.mockMvc.perform(post(Constants.ROUTE_CLIENT + Constants.ROUTE_SAVE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(list.get(0))))
+                .andExpect(status().isBadRequest());
+
     }
 
     @Test
     void shouldFetchById() throws Exception{
 
-        Long userId = 1L;
+        // prepare
+        Long clientId = 1L;
         ClientEntity clientEntity = list.get(0);
 
-        given(service.findById(1L)).willReturn(Optional.of(clientEntity));
+        // logic
+        when(service.findById(clientId)).thenReturn(Optional.of(clientEntity));
 
-        this.mockMvc.perform(get(Constants.ROUTE_CLIENT + Constants.ROUTE_ID, userId))
+        // test/check
+        this.mockMvc.perform(get(Constants.ROUTE_CLIENT + Constants.ROUTE_ID, clientId))
                 .andExpect(status().isOk())
-                ;
+                .andExpect(jsonPath("$.email", is(clientEntity.getEmail())))
+                .andExpect(jsonPath("$.name", is(clientEntity.getName())))
+                .andExpect(jsonPath("$.id", is(clientEntity.getId().intValue())));
+    }
+
+    @Test
+    void shouldReturn404WhenFindClientById() throws Exception{
+
+        // prepare
+        Long clientId = 1L;
+
+        // logic
+        when(service.findById(clientId)).thenReturn(Optional.empty());
+
+        // test/check
+        this.mockMvc.perform(get(Constants.ROUTE_CLIENT + Constants.ROUTE_ID, clientId))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldDeleteClient() throws Exception{
+
+        // prepare
+        Long clientId = 1L;
+
+        // logic
+        when(service.existsById(clientId)).thenReturn(true);
+        doNothing().when(service).deleteById(clientId);
+
+        // test/check
+        this.mockMvc.perform(delete(Constants.ROUTE_CLIENT + Constants.ROUTE_ID, clientId))
+                .andExpect(status().isNoContent());
+
+    }
+
+    @Test
+    void shouldReturn404WhenDeletingNonExistingClient() throws Exception{
+
+        // prepare
+        Long clientId = 1L;
+
+        // logic
+        when(service.existsById(clientId)).thenReturn(false);
+
+        // test/check
+        this.mockMvc.perform(delete(Constants.ROUTE_CLIENT + Constants.ROUTE_ID, clientId))
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    void shouldUpdateClient() throws Exception {
+
+        // prepare
+        Long clientId = 1L;
+        ClientEntity clientEntity = list.get(0);
+        clientEntity.setId(clientId);
+
+        // logic
+        when(service.findById(clientId)).thenReturn(Optional.of(clientEntity));
+        when(service.findByEmail(clientEntity.getEmail())).thenReturn(Optional.of(clientEntity));
+        when(service.save(any(ClientEntity.class))).thenReturn(clientEntity);
+
+        // test/check
+        this.mockMvc.perform(put(Constants.ROUTE_CLIENT + Constants.ROUTE_ID, clientId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(clientEntity)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email", is(clientEntity.getEmail())))
+                .andExpect(jsonPath("$.id", is(clientEntity.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(clientEntity.getName())));
+
+    }
+
+    @Test
+    void shouldReturn404WhenUpdatingNonExistingClient() throws Exception {
+
+        // prepare
+        Long clientId = 1L;
+        ClientEntity clientEntity = list.get(0);
+        clientEntity.setId(clientId);
+
+        // logic
+        when(service.findById(clientId)).thenReturn(Optional.empty());
+
+        // test/check
+        this.mockMvc.perform(put(Constants.ROUTE_CLIENT + Constants.ROUTE_ID, clientId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(clientEntity)))
+                .andExpect(status().isNotFound());
+
     }
 
 }
