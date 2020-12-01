@@ -7,6 +7,7 @@ import br.com.luizalabsserverrest.model.entity.ClientEntity;
 import br.com.luizalabsserverrest.model.entity.ProductEntity;
 import br.com.luizalabsserverrest.repository.ProductRepository;
 import br.com.luizalabsserverrest.service.GenericService;
+import br.com.luizalabsserverrest.service.impl.ProductServiceImpl;
 import br.com.luizalabsserverrest.util.Constants;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,11 @@ import java.util.Optional;
 public class ProductController {
 
     @Autowired
-    private GenericService<ProductEntity> service;
+    private ProductServiceImpl service;
 
     @Autowired
     private GenericService<ClientEntity> clientService;
 
-    @Autowired
-    private ProductRepository repository;
 
     @ApiOperation(value = "Mostra lista de produtos por página de tamanho 5, iniciando em 1")
     @ApiResponses(value = {
@@ -100,7 +99,7 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(repository.findAndFetchClientEntityListEagerly(clientId));
+        return ResponseEntity.ok(service.findAndFetchClientEntityListEagerly(clientId));
 
     }
 

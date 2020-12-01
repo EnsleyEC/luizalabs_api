@@ -6,6 +6,7 @@ import br.com.luizalabsserverrest.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,5 +51,10 @@ public class ProductServiceImpl implements GenericService<ProductEntity> {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    public List<ProductEntity> findAndFetchClientEntityListEagerly(Long id)
+    {
+        return repository.findAndFetchClientEntityListEagerly(id);
     }
 }
