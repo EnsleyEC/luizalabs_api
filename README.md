@@ -84,7 +84,7 @@ Caso for apenas para executar a aplicação:
         - Resultado: /docs/postman/LuizaLabs.postman_test_run.json
         - Descrição: no postman é possível importar esse "run" e ver os resultados dos testes de cada endpoint.
     - Spring boot:
-        - Ao buildar o projeto com o ./mvnw clean build dentro da pasta luizalabs-server-rest, os testes unitários da API são executados (hoje o Travis-CI faz essa parte e indica o estado do commit no GitHub). Atualmente, a API tem 27 testes unitários focados nos testes das controllers (endpoints).
+        - Ao buildar o projeto com o comando "./mvnw clean package" dentro da pasta luizalabs-server-rest, os testes unitários da API são executados (hoje o Travis-CI faz essa parte e indica o estado do commit no GitHub). Atualmente, a API tem 27 testes unitários focados nos testes das controllers (endpoints).
 
 # Tecnologias/Ferramentas
 
