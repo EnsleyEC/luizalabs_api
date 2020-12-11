@@ -1,34 +1,33 @@
-# API Rest - Luizalabs: feita para o desafio.
+# REST API - Luizalabs.
 
-Essa API está sendo hosteada na Google Cloud utilizando 1 cluster com 3 replicas (3 pods) da API e 1 (1 pod) do postgres. Com o intuito de usar o LoadBalancer para distribuir as requisições da API nessas 3 replicas, e claro, facilitar todo processo de automização da mesma (CI/CD) e implementação de novas features no próprio cluster, para aprimorar cada vez mais o desempenho da aplicação.
+This API was being hosted on Google Cloud using 1 cluster with 3 replicas (3 pods) of the API and 1 (1 pod) of postgres. In order to use LoadBalancer to distribute API requests in these 3 replicas, and of course, facilitate the entire automation process (CI / CD) and implement new features in the cluster itself, to improve the application's performance even more.
 
-[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://34.95.239.212:3000/swagger-ui.html)
+![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
-![Badge](https://img.shields.io/static/v1?label=status&message=working&color=4CC61E)
+![Badge](https://img.shields.io/static/v1?label=status-work&message=stopped&color=red)
 ![Badge](https://travis-ci.org/EnsleyEC/luizalabs_api.svg?branch=master)
 
-# Tópicos
+# Topics
 
 <!--ts-->
    * [Demo](#Demo)
-   * [Pré-requisitos](#Pré-requisitos)
-   * [Executando](#Executando)
+   * [Prerequisites](#Prerequisites)
+   * [Running](#Executando)
    * [Tests](#Tests)
-   * [Tecnologias/Ferramentas](#Tecnologias/Ferramentas)
+   * [Technologies/Tools](#Technologies/Tools)
 <!--te-->
 
 # Demo
 
-<p>URL base da API: http://34.95.239.212:3000</p>
-<a href="http://34.95.239.212:3000/swagger-ui.html">Link de acesso</a></p>
+<a href="">Demo (Stopped)</a></p>
 
-<p>Para consumir a API, é nececessário autenticar-se antes e enviar o token nas requests.
+<p>To consume the API, it is necessary to authenticate beforehand and send the token in requests.
 
-Caso não tenha conta, o endpoint de criação de conta (/api/v1/account/save) é livre para acesso.</p>
+If you don't have an account, the account creation endpoint (/api/v1/account/save) is free to access.</p>
 
 # Pré-requisitos
 
-Para testar/executar o código em um ambiente de desenvolvimento, você irá precisar(alguns são opcionais):
+To test/run the code in a development environment, you will need (some are optional):
 
 <a href="https://git-scm.com/">Git</a>,
 <a href="https://www.docker.com/"> Docker</a>,
@@ -37,58 +36,58 @@ Para testar/executar o código em um ambiente de desenvolvimento, você irá pre
 <a href="https://www.postgresql.org/">PostgreSQL</a>,
 <a href="https://www.postman.com/">Postman</a>
 
-Caso for apenas para executar a aplicação:
+If it is just to run the application:
 
 <a href="https://git-scm.com/">Git</a>,
 <a href="https://www.docker.com/"> Docker</a>,
 <a href="https://docs.docker.com/compose/"> Docker Compose </a>,
 <a href="https://www.postman.com/">Postman</a>
 
-# Executando
+# Running
 
 
-### - Clonar o projeto usando (HTTPS):
+### - Clone the project using (HTTPS):
 
     git clone https://github.com/EnsleyEC/luizalabs_api.git
 
-### - Acesse a pasta do projeto: luizalabs-server-rest
+### - Access the project folder: luizalabs-server-rest
 
     cd luizalabs_api/luizalabs-server-rest/
 
-### - Gere a imagem do projeto (API + PostgreSQL) com o Docker Compose, no mesmo diretório do arquivo docker-compose.yml
+### - Generate the project image (API + PostgreSQL) with Docker Compose, in the same directory as the docker-compose.yml file
 
     docker-compose up
 
-### - URL local de acesso:
+### - Local access URL:
 
-    URL base: http://localhost:3000/
+    Base URL: http://localhost:3000/
 
     DOC: http://localhost:3000/swagger-ui.html
 
-### - Regras da API
+### - API Roles
 
-    Para usar, é necessário ter uma conta ou criar uma conta antes. E em seguida, antenticar-se, pegando o token e mandando nos outros endpoints para conseguir utiliza-los.
+    To use, you must have an account or create an account first. And then, log in, taking the token and sending the other endpoints to be able to use them.
 
-    Endpoints livres para uso, sem precisar mandar token:
+    Free endpoints to use, without having to send a token:
 
-    - Criação de conta: /api/v1/account/save
-    - Autenticação: /api/v1/signIn
+    - Create account: /api/v1/account/save
+    - Auth: /api/v1/signIn
 
-    Exemplo de header obrigatório:
+    Mandatory header example:
 
     {key: Authorization, value: Bearer flkjkds.......}
 
 # Tests
 
-    - Postman:
-        - Resultado: /docs/postman/LuizaLabs.postman_test_run.json
-        - Descrição: no postman é possível importar esse "run" e ver os resultados dos testes de cada endpoint.
-    - Spring boot:
-        - Ao buildar o projeto com o comando "./mvnw clean package" dentro da pasta luizalabs-server-rest, os testes unitários da API são executados (hoje o Travis-CI faz essa parte e indica o estado do commit no GitHub). Atualmente, a API tem 27 testes unitários focados nos testes das controllers (endpoints).
+- Postman:
+    - Result: /docs/postman/LuizaLabs.postman_test_run.json
+    - Description: in the postman it is possible to import this "run" and see the test results for each endpoint.
+- Spring boot:
+    - When building the project with the command "./mvnw clean package" inside the folder luizalabs-server-rest, the unit tests of the API are performed (today Travis-CI does this part and indicates the status of the commit on GitHub). Currently, the API has 27 unit tests focused on controller tests (endpoints).
 
-# Tecnologias/Ferramentas
+# Technologies/Tools
 
-As seguintes ferramentas foram usadas na construção do projeto:
+The following tools were used in the construction of the project:
 
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [Java 8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
@@ -107,4 +106,3 @@ As seguintes ferramentas foram usadas na construção do projeto:
 <sub><b>Ensley Fortunato Moreira Ribeiro </b></sub></a>
 
 [![Linkedin Badge](https://img.shields.io/badge/-Ensley-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/tgmarinho/)](https://www.linkedin.com/in/ensley-ribeiro-37b293126/) 
-[![Gmail Badge](https://img.shields.io/badge/-ensleyfmr@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:ensleyfmr@gmail.com)](mailto:ensleyfmr@gmail.com)
