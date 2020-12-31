@@ -25,7 +25,7 @@ This API was being hosted on Google Cloud using 1 cluster with 3 replicas (3 pod
 
 If you don't have an account, the account creation endpoint (/api/v1/account/save) is free to access.</p>
 
-# Pré-requisitos
+# Prerequisites
 
 To test/run the code in a development environment, you will need (some are optional):
 
@@ -87,7 +87,7 @@ If it is just to run the application:
 
 # Technologies/Tools
 
-The following tools were used in the construction of the project:
+The following tools were use in the construction of the project:
 
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [Java 8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
@@ -101,7 +101,7 @@ The following tools were used in the construction of the project:
 - [IntelliJ Community](https://www.jetbrains.com/idea/)
 - [Pg Admin](https://www.pgadmin.org/)
 
-# Autor
+# Author
 
 <sub><b>Ensley Fortunato Moreira Ribeiro </b></sub></a>
 
